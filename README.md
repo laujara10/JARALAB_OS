@@ -4,93 +4,199 @@ type: index
 status: active
 owner: "Laura Jaramillo"
 created: 2026-07-08
-updated: 2026-07-10
-version: 2.0
+updated: 2026-07-11
+version: 3.0
 tags: [meta, governance, onboarding]
-related: []
+related: ["CHANGELOG.md", "00_IDENTITY/principios.md", "05_SYSTEMS/jaralab-os-constitucion-tecnica.md"]
 ---
 
 # JARALAB_OS
 
-Este repositorio es el Sistema Operativo de Conocimiento de JaraLab. No es una carpeta de archivos: es la memoria permanente de la empresa — independiente de qué humano o qué modelo de IA la esté leyendo hoy.
+Sistema Operativo de Conocimiento de JaraLab.
 
-## 1. Qué es esto
+> El conocimiento es propiedad de JaraLab, no del modelo de IA que lo procesa hoy.
 
-JaraLab construye sistemas que ayudan a restaurantes a tomar mejores decisiones a través de estrategia, datos, operación, marketing e IA. Este repositorio existe para que ese conocimiento sobreviva a cualquier herramienta: si mañana dejamos de usar Claude y usamos ChatGPT, Gemini, o lo que venga después, este conocimiento sigue siendo válido y utilizable sin pérdida.
+---
 
-Principio rector: **el conocimiento es propiedad de JaraLab, no del modelo de IA que lo procesa.** Ningún documento debe depender de la sintaxis, memoria o convenciones propias de un asistente específico. Todo debe ser Markdown plano, legible por humano y por cualquier LLM.
+## ¿Qué es JARALAB_OS?
 
-## 2. Misión de JaraLab
+JARALAB_OS es la memoria permanente e institucional de JaraLab. No es una carpeta de archivos ni un historial de conversaciones: es el sistema que garantiza que el conocimiento estratégico, operativo y técnico de la empresa sobreviva a cualquier herramienta, modelo o persona.
 
-Construir sistemas que ayuden a restaurantes a vender más, operar mejor y decidir con datos — combinando estrategia de marketing, growth, automatización, IA, CRM, business intelligence, fidelización y rentabilidad.
+Todo se escribe en Markdown plano — legible por cualquier humano y por cualquier LLM — para que este repositorio siga siendo válido y utilizable sin importar qué plataforma lo procese mañana.
 
-No vendemos servicios, vendemos transformación. No vendemos dashboards, vendemos claridad. No vendemos automatizaciones, vendemos tiempo.
+---
 
-Detalle completo en `00_IDENTITY/misión.md`, `00_IDENTITY/visión.md` y `00_IDENTITY/principios.md`.
+## Objetivo
 
-## 3. Mapa del repositorio
+Centralizar el conocimiento de JaraLab de forma estructurada, versionada y agnóstica a herramientas, de modo que:
+
+- Ningún aprendizaje se pierda al cambiar de herramienta o de modelo de IA.
+- Cualquier agente o colaborador pueda operar con contexto completo leyendo este repositorio.
+- Las decisiones tomadas queden registradas con su contexto y alternativas descartadas.
+- El conocimiento acumulado sea reutilizable por la empresa dentro de un año, sin importar quién lo lea.
+
+---
+
+## Arquitectura general
+
+El repositorio está organizado en **17 carpetas raíz numeradas**, cada una con un propósito exclusivo y su propio `README.md`. Las carpetas raíz son cerradas: no se crean nuevas sin aprobación explícita de Laura.
+
+La arquitectura sigue esta lógica:
+
+```
+Identidad → Estrategia → Marcas → Clientes → Productos → Sistemas → Operación
+→ Decisiones → Investigación → Bitácora diaria → Prompts → Skills → Agentes
+→ Plantillas → Documentación → Outputs → Archivo
+```
+
+Las decisiones estructurales del repositorio se registran como ADRs en `07_DECISIONS/`.
+
+---
+
+## Estructura de carpetas
 
 | Carpeta | Contenido |
 |---|---|
-| `00_IDENTITY` | Quiénes somos: misión, visión, principios. Verdad fundacional. |
-| `01_STRATEGY` | Hacia dónde vamos: visión de mediano plazo, roadmap, objetivos, North Star, dirección estratégica. |
-| `02_BRANDS` | Marcas de JaraLab: **Pikeo**, **Callejero**, **Caja de Belleza** y **Soy Lau Jara** (ver sección 5). |
+| `00_IDENTITY` | Misión, visión y principios de JaraLab. Verdad fundacional — no se edita sin consenso explícito. |
+| `01_STRATEGY` | North Star, roadmap y dirección estratégica de mediano plazo. |
+| `02_BRANDS` | Marcas de JaraLab: **Pikeo**, **Callejero**, **Caja de Belleza**, **SoyLauJara**. |
 | `03_CLIENTS` | Un subfolder por cliente externo. Nunca archivos sueltos en la raíz. |
-| `04_PRODUCTS` | Productos digitales, herramientas, MVPs y soluciones de JaraLab (ej. **jaralab-auditor**). |
-| `05_SYSTEMS` | Arquitectura de herramientas, automatizaciones y stacks técnicos. |
-| `06_OPERATIONS` | SOPs, playbooks y workflows operativos, repetibles, paso a paso. |
-| `07_DECISIONS` | Registro de decisiones (formato ADR): contexto, decisión, alternativas descartadas, consecuencias. |
-| `08_RESEARCH` | Investigación, experimentos, benchmarking, hallazgos y postmortems. Todo proyecto cierra generando aprendizaje reutilizable aquí. |
-| `09_DAILY_LOG` | Bitácora cronológica de la operación. |
+| `04_PRODUCTS` | Productos digitales, herramientas y MVPs (ej. `jaralab-auditor`). |
+| `05_SYSTEMS` | Arquitectura técnica, stacks y automatizaciones. |
+| `06_OPERATIONS` | SOPs, playbooks y workflows operativos paso a paso. |
+| `07_DECISIONS` | Registro de decisiones en formato ADR: contexto, decisión, alternativas descartadas, consecuencias. |
+| `08_RESEARCH` | Investigación, experimentos, benchmarking, hallazgos y postmortems. |
+| `09_DAILY_LOG` | Bitácora cronológica de la operación (archivos con prefijo `YYYY-MM-DD-`). |
 | `10_PROMPTS` | Prompts maestros reutilizables, versionados. |
-| `11_SKILLS` | Skills instalables (`.skill`) y skills en construcción. |
-| `12_AGENTS` | Agentes de IA de JaraLab: definiciones y configuración. |
-| `13_TEMPLATES` | Plantillas: hipótesis, learning, postmortem, `estado.md`, documento de decisión. |
-| `14_DOCUMENTATION` | Documentación técnica y funcional de referencia de sistemas ya construidos. |
+| `11_SKILLS` | Skills instalables (`.skill`) para agentes de IA, organizadas por dominio. |
+| `12_AGENTS` | Definiciones y configuración de agentes de IA de JaraLab. |
+| `13_TEMPLATES` | Plantillas reutilizables: hipótesis, learning, postmortem, `estado.md`, ADR. |
+| `14_DOCUMENTATION` | Documentación técnica y funcional de sistemas ya construidos. |
 | `15_OUTPUTS` | Entregables finales, en subcarpeta por proyecto. |
-| `99_ARCHIVE` | Todo lo que ya no está activo pero no se borra. |
+| `99_ARCHIVE` | Todo lo que ya no está activo pero no se elimina. |
 
-Cada carpeta tiene su propio `README.md` con el detalle de su propósito y sus convenciones.
+---
 
-## 4. Conocimiento organizacional por encima de la tarea
+## Cómo abrir el proyecto
 
-Este repositorio no es una lista de pendientes ni un historial de conversaciones. Antes de guardar algo aquí, la pregunta correcta es: **¿esto le sirve a JaraLab dentro de un año, sin importar quién lo lea?** Si la respuesta es no, no pertenece a este repositorio — pertenece a una tarea puntual y se descarta al terminar.
+Este repositorio es un vault de [Obsidian](https://obsidian.md/). Para abrirlo:
 
-Toda tarea ejecutada (una campaña, una automatización, un proyecto de cliente) tiene una obligación de cierre: dejar al menos un aprendizaje documentado en `08_RESEARCH`. Ejecutar sin documentar el aprendizaje es dejar el trabajo a medias.
+1. Instala Obsidian en tu equipo.
+2. Selecciona **Abrir carpeta como vault** y elige la carpeta `JARALAB_OS`.
+3. Obsidian leerá la estructura de carpetas y los enlaces `[[wikilinks]]` automáticamente.
 
-## 5. Comunicación como parte del sistema operativo
+También puede abrirse directamente en cualquier editor de texto o IDE — todos los archivos son Markdown plano.
 
-**Soy Lau Jara** no es una cuenta de redes sociales aparte del negocio — es parte de la infraestructura de JaraLab. Documenta el recorrido, convierte la ejecución real en contenido, construye autoridad y atrae oportunidades. Vive dentro de `02_BRANDS/SoyLauJara` con el mismo nivel de rigor documental que cualquier otro sistema: qué se comunicó, por qué, y qué resultado generó.
+---
 
-## 6. Pikeo y Callejero como laboratorios vivos
+## Cómo colaborar
 
-Pikeo y Callejero son los laboratorios de JaraLab: ahí se validan los sistemas — de datos, de marketing, de operación, de IA — antes de ofrecerlos a clientes externos. Todo lo que se prueba en estos proyectos y funciona se documenta como aprendizaje reutilizable en `08_RESEARCH`, y si se convierte en una oferta replicable, se formaliza como sistema en `05_SYSTEMS` o como SOP en `06_OPERATIONS`. Ningún sistema se vende a un cliente antes de haber sido validado en un laboratorio propio.
+### Antes de actuar
 
-## 7. Cómo debe navegar este repositorio un agente de IA
+Lee en este orden:
 
-Este repositorio está diseñado para ser compartido por múltiples agentes especializados de IA (estrategia, growth, datos, operación, contenido, CRM), todos operando sobre la misma base de conocimiento. Modelo o plataforma nunca son excusa para desconocer el contexto acumulado.
+1. Este `README.md` completo.
+2. `00_IDENTITY/` — misión, visión y principios. Contexto no negociable.
+3. `07_DECISIONS/` relevante al tema — para no contradecir decisiones ya tomadas.
+4. El `estado.md` del proyecto activo, si aplica.
 
-Todo agente — sea Claude, ChatGPT, Gemini u otro — debe seguir esta secuencia antes de actuar:
+### Reglas de gobierno
 
-1. Leer este `README.md` completo.
-2. Leer `00_IDENTITY` y `01_STRATEGY` en su totalidad — es contexto no negociable.
-3. Revisar `07_DECISIONS` relacionado al tema antes de proponer algo nuevo, para no contradecir decisiones ya tomadas.
-4. Seguir el campo `related` del frontmatter de cualquier archivo que abra, en vez de tratarlo como aislado.
-5. Nunca sobrescribir un archivo con `status: active` sin registrar el cambio en `07_DECISIONS` o subir su `version`.
-6. Al cerrar cualquier tarea o proyecto, verificar si corresponde una entrada en `08_RESEARCH`.
+- **No sobrescribas** un archivo con `status: active` sin registrar el cambio en `07_DECISIONS` o incrementar su `version`.
+- **No contradigas** un ADR activo sin proponer formalmente su reemplazo.
+- **No ejecutes** gasto, envío ni publicación sin aprobación humana explícita.
+- **No crees** carpetas nuevas en el nivel raíz sin aprobación explícita de Laura.
+- **No guardes** conocimiento de JaraLab en memoria propietaria de ningún proveedor de IA.
 
-## 8. Estándares de documentación
+### Estándares de documentación
 
-- **Header de metadata:** todo `.md` lleva frontmatter YAML con `title, type, status, owner, created, updated, version, tags, related`.
-- **Nombres de archivo:** `kebab-case`, sin espacios ni acentos; documentos atemporales sin fecha, documentos fechados con prefijo `YYYY-MM-DD-`; decisiones con prefijo correlativo `0001-`.
-- **Una idea por archivo.** Se escribe para quien no tiene contexto — ni tú en seis meses, ni un agente nuevo.
-- **Versionado:** semántico simple (`1.0`, `1.1`, `2.0`). Nada se borra; lo obsoleto se marca `status: deprecated` y enlaza a su reemplazo en `related`.
-- **Carpetas raíz cerradas:** no se crean carpetas nuevas en el nivel raíz sin aprobación explícita de Laura.
+Todo archivo `.md` lleva frontmatter YAML:
 
-## 9. Historial de cambios estructurales
+```yaml
+---
+title: ""
+type: ""         # index | decision | log | identity | spec | research | prompt
+status: ""       # active | draft | deprecated | archived
+owner: ""
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+version: "1.0"
+tags: []
+related: []
+---
+```
 
-El 2026-07-10 se amplió la arquitectura de 11 a 17 carpetas raíz (`00`–`15` + `99`) y se renombraron `01_VISION→01_STRATEGY`, `04_PROJECTS→04_PRODUCTS`, `06_SOPS→06_OPERATIONS`, `08_LEARNINGS→08_RESEARCH`, además de añadir `12_AGENTS` y `14_DOCUMENTATION` como carpetas nuevas. Detalle completo en `CHANGELOG.md`. Los `09_DAILY_LOG` fechados antes de esa fecha conservan los nombres de carpeta vigentes en el momento en que se escribieron — son registro histórico, no se editan retroactivamente.
+**Nombres de archivo:** `kebab-case`, sin espacios ni acentos.
+- Documentos atemporales: sin fecha en el nombre.
+- Entradas de bitácora: prefijo `YYYY-MM-DD-`.
+- ADRs: prefijo correlativo `0001-`.
 
-## 10. Estado de este documento
+**Una idea por archivo.** Se escribe para quien no tiene contexto.
 
-Este README es la versión de gobierno vigente del sistema. Se actualiza cada vez que cambien las reglas de gobierno del repositorio — ese cambio se versiona aquí y se registra en `07_DECISIONS`.
+**Versionado semántico simple:** `1.0`, `1.1`, `2.0`. Lo obsoleto se marca `status: deprecated` y enlaza a su reemplazo en `related`. Nada se borra.
+
+---
+
+## Convenciones de commits
+
+Se usa el formato [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+<tipo>: <descripción corta en minúsculas>
+```
+
+| Tipo | Cuándo usarlo |
+|---|---|
+| `feat` | Nuevo contenido o documento significativo |
+| `fix` | Corrección de error, dato incorrecto o enlace roto |
+| `docs` | Mejoras a documentación existente |
+| `chore` | Cambios de infraestructura (`.gitignore`, estructura, renombrados) |
+| `adr` | Nueva decisión registrada en `07_DECISIONS` |
+| `log` | Entrada nueva en `09_DAILY_LOG` |
+| `refactor` | Reorganización sin cambio de contenido |
+
+**Ejemplos:**
+
+```
+feat: agregar spec inicial de jaralab-auditor
+adr: registrar decisión sobre stack monolito Python/SQLite
+log: bitácora 2026-07-11 — reorganización SDD
+chore: ignorar .obsidian/ en .gitignore
+```
+
+---
+
+## Flujo de trabajo con Claude Code
+
+Este repositorio está diseñado para operar con [Claude Code](https://claude.ai/code) como asistente principal. El archivo `CLAUDE.md` en la raíz define las instrucciones que Claude lee antes de actuar.
+
+### Secuencia estándar antes de actuar
+
+Todo agente — humano o IA — sigue esta secuencia:
+
+1. Leer `README.md` completo.
+2. Leer `00_IDENTITY/` en su totalidad.
+3. Revisar `07_DECISIONS/` relacionado al tema.
+4. Seguir el campo `related` del frontmatter de cualquier archivo abierto.
+5. Leer el `estado.md` del proyecto activo, si existe.
+
+### Directivas específicas para Claude Code
+
+- Inspeccionar y entender antes de actuar.
+- Minimizar conocimiento duplicado.
+- Preguntar cuando la incertidumbre afecta materialmente la solución.
+- Preferir lo legible y mantenible sobre lo ingenioso.
+- No guardar conocimiento de JaraLab en memoria propietaria del proveedor.
+- No ejecutar commits, push, gasto ni publicación sin aprobación explícita.
+
+---
+
+## Licencia
+
+Repositorio **privado**. Todo el contenido de este repositorio es propiedad exclusiva de JaraLab / Laura Jaramillo Velásquez.
+
+Queda prohibida su reproducción, distribución o uso sin autorización expresa por escrito de la propietaria.
+
+---
+
+*Última actualización estructural: 2026-07-11 — v3.0. Historial de cambios en `CHANGELOG.md`.*
