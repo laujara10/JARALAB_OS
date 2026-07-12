@@ -3,10 +3,8 @@
 .AppleDouble
 .LSOverride
 
-# Obsidian cache
-.obsidian/workspace.json
-.obsidian/workspace-mobile.json
-.obsidian/cache
+# Obsidian — configuración local del editor, no del proyecto
+.obsidian/
 
 # Temp files
 .tmp_readmes/
