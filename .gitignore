@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Obsidian cache
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
+# Temp files
+.tmp_readmes/
+*.tmp
+
+# Secrets and env
+*.env
+*.secret
+*.key
+
+# Claude local session data
+.claude/
