@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- JaraLab rocket mark — simplified from official logo -->
+  <circle cx="16" cy="16" r="16" fill="#1a0a05"/>
+  <!-- Rocket body (teardrop pointing upper-right) -->
+  <path d="M9 23 C9 23 11 17 16 12 C19 9 23 8 24 8 C24 9 23 13 20 16 C15 21 9 23 9 23Z" fill="#E8491D"/>
+  <!-- Porthole -->
+  <circle cx="18.5" cy="13.5" r="2" fill="#1a0a05"/>
+  <!-- Flame -->
+  <path d="M9 23 C10 21 11 22 10.5 24 C10 26 8.5 25.5 9 23Z" fill="#F07040"/>
+</svg>

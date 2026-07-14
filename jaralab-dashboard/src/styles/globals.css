@@ -1,0 +1,38 @@
+@import './tokens/fonts.css';
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg-page);
+  color: var(--fg-primary);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+a {
+  color: var(--fg-accent);
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font-sans);
+}
+
+/* Scrollbar sutil */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--neutral-200); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--neutral-300); }
