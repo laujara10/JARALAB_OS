@@ -4,15 +4,15 @@ type: spec
 status: active
 owner: "Laura Jaramillo"
 created: 2026-07-11
-updated: 2026-07-11
-version: 1.0
+updated: 2026-07-12
+version: 1.4
 tags: [jaralab-auditor, cash-control-ai, spec, spec-driven-development, finanzas, conciliacion, producto]
-related: ["blueprint-arquitectura.md", "backlog.md", "plan-de-ejecucion.md", "casos-de-prueba.md", "../../07_DECISIONS/0001-nucleo-determinista-ia-en-los-bordes.md", "../../07_DECISIONS/0002-adaptadores-por-fuente.md", "../../07_DECISIONS/0003-stack-monolito-python-sqlite.md", "../../07_DECISIONS/0004-alcance-mvp-un-solo-canal.md", "../../07_DECISIONS/0005-aprendizaje-como-libro-de-reglas.md", "../../07_DECISIONS/0006-motor-de-expectativas.md", "../../07_DECISIONS/0007-alcance-v1-dinero-electronico.md", "../../07_DECISIONS/0008-nombre-de-mercado-cash-control-ai.md"]
+related: ["blueprint-arquitectura.md", "backlog.md", "plan-de-ejecucion.md", "casos-de-prueba.md", "../../07_DECISIONS/0001-nucleo-determinista-ia-en-los-bordes.md", "../../07_DECISIONS/0002-adaptadores-por-fuente.md", "../../07_DECISIONS/0003-stack-monolito-python-sqlite.md", "../../07_DECISIONS/0004-alcance-mvp-un-solo-canal.md", "../../07_DECISIONS/0005-aprendizaje-como-libro-de-reglas.md", "../../07_DECISIONS/0006-motor-de-expectativas.md", "../../07_DECISIONS/0007-alcance-v1-dinero-electronico.md", "../../07_DECISIONS/0008-nombre-de-mercado-cash-control-ai.md", "../../07_DECISIONS/0009-ingesta-con-fecha-objetivo-obligatoria.md", "../../07_DECISIONS/0010-calibracion-real-ventas-pos-fuente-de-verdad-del-monto.md", "../../07_DECISIONS/0011-fuentes-vivas-vs-archivos-exportados.md"]
 ---
 
 # JaraLab Cash Control AI — Spec
 
-Nombre interno: `jaralab-auditor` (Finance Agent 001). Nombre de mercado: **JaraLab Cash Control AI**. Este documento es la fuente única de verdad de **qué** construye el producto y **por qué**. El **cómo** (arquitectura, stack, estructura de código) vive en `blueprint-arquitectura.md`; **en qué orden** (tareas ejecutables) vive en `backlog.md`; los **no negociables** de diseño ya decididos viven en `07_DECISIONS/0001`–`0008`. Ningún requisito de este documento contradice un ADR activo — si algo aquí y un ADR entran en conflicto, el ADR gana hasta que se reemplace formalmente.
+Nombre interno: `jaralab-auditor` (Finance Agent 001). Nombre de mercado: **JaraLab Cash Control AI**. Este documento es la fuente única de verdad de **qué** construye el producto y **por qué**. El **cómo** (arquitectura, stack, estructura de código) vive en `blueprint-arquitectura.md`; **en qué orden** (tareas ejecutables) vive en `backlog.md`; los **no negociables** de diseño ya decididos viven en `07_DECISIONS/0001`–`0009`. Ningún requisito de este documento contradice un ADR activo — si algo aquí y un ADR entran en conflicto, el ADR gana hasta que se reemplace formalmente.
 
 Laboratorios de validación: Pikeo y Callejero. Ningún sistema se ofrece a un cliente externo sin validarse primero en un laboratorio propio (principio de JARALAB_OS).
 
@@ -62,7 +62,7 @@ Pipeline de seis etapas, cada una con entrada y salida definidas (detalle técni
 INGESTA → NORMALIZACIÓN → EXPECTATIVAS → MATCHING → AUDITORÍA → ANOMALÍAS → REPORTE
 ```
 
-1. **Ingesta:** un adaptador por fuente lee el archivo del día y produce filas crudas con metadata de origen.
+1. **Ingesta:** un adaptador por fuente lee el archivo del día y produce filas crudas con metadata de origen. La ingesta exige que el usuario declare explícitamente la fecha que quiere auditar — un archivo puede traer movimientos de varios días (hallazgo operacional real: Bancolombia nunca entrega un extracto de un solo día, siempre un rango) y solo los del día pedido entran a la base; el resto se ignora sin error ni advertencia, porque pertenece a otra auditoría (ADR-0009).
 2. **Normalización:** las filas crudas se convierten en eventos financieros canónicos, deduplicados.
 3. **Expectativas:** cada venta electrónica genera una expectativa de ingreso (monto neto esperado, fecha de vencimiento según ciclo del adquirente).
 4. **Matching:** el motor resuelve expectativas contra eventos bancarios en pasadas de certeza creciente (exacto, tolerancia, partidos, settlements).
@@ -103,6 +103,8 @@ INGESTA → NORMALIZACIÓN → EXPECTATIVAS → MATCHING → AUDITORÍA → ANOM
 - Toda regla aprendida queda registrada con su origen (de qué match nació), quién la validó y cuándo, y puede desactivarse sin borrarse (ADR-0005).
 - El indicador que nunca se negocia: **cero falsos "todo bien"**. Ante la duda, el sistema levanta la mano — se prefiere una excepción de más que una alarma de menos (criterio transversal, `casos-de-prueba.md`).
 - Ningún sistema se ofrece a un cliente externo sin haberse validado antes en Pikeo y/o Callejero.
+- El sistema nunca asume qué días procesar de un archivo: el usuario declara la fecha objetivo de cada corrida, y solo esa fecha entra a la base. Movimientos de otras fechas en el mismo archivo se ignoran sin error ni advertencia — no están mal, pertenecen a otra auditoría (ADR-0009).
+- En ventas POS, el monto que concilia contra el banco es "Valor del pago", nunca "Total" de la factura; si difieren, la diferencia se preserva en el evento, nunca se pierde ni se decide en silencio (ADR-0010).
 
 ## 10. Casos borde
 
@@ -112,7 +114,7 @@ La batería completa de 40 casos borde (categorías A–J: normalización, dedup
 
 Detalle completo por fase en `plan-de-ejecucion.md`. Resumen de las puertas de fase:
 
-- **F0 (fundación de datos):** un día real de Pikeo se ingiere con un comando; los totales por fuente coinciden al peso con el conteo manual; re-ingerir no duplica; un formato inesperado falla ruidosamente. *(Código-completo con datos sintéticos; pendiente de validar con archivos reales de Pikeo — ver `09_DAILY_LOG/2026-07-08-jaralab-auditor-f0-construido.md`.)*
+- **F0 (fundación de datos):** un día real de Pikeo se ingiere con un comando; los totales por fuente coinciden al peso con el conteo manual; re-ingerir no duplica; un formato inesperado falla ruidosamente. **Cerrado 2026-07-12** — validado contra un día real completo de Pikeo (Bancolombia Pikeo + Carolina, ventas POS Loggro), con 84.5% de auto-conciliación tras corregir la clasificación bancaria (ver `MILESTONE-F0.md`).
 - **F1 (matching v1 + expectativas):** ≥70% de auto-conciliación en dinero sobre 5 días reales consecutivos; cero falsos positivos; ninguna venta en tránsito genera alarma; todo match automático muestra su evidencia.
 - **F2 (casos duros):** ≥85% de auto-conciliación; 10 días consecutivos con <10 min/día de gerente; una pregunta respondida una vez no se repite; cero falsos positivos sostenido.
 - **F3 (inteligencia visible):** el gerente abandona su proceso manual (medido en comportamiento); ≥80% de anomalías señaladas son relevantes a juicio del gerente; ninguna explicación LLM contradice la evidencia determinista.
@@ -143,6 +145,14 @@ Detalle completo por fase en `plan-de-ejecucion.md`. Resumen de las puertas de f
 
 ## 14. Posibles extensiones futuras
 
+- **Fuentes vivas en vez de archivos exportados.** El registro de gastos en Google Sheets es un documento vivo, no un reporte diario — la versión final lo lee directamente (API o sincronización), sin que el usuario vuelva a exportar nada. El mismo principio aplica a Loggro y Bancolombia si algún día ofrecen integración directa. Principio rector: nunca automatizar un paso manual si se puede eliminar por completo (ADR-0011).
+
+  | Fuente | MVP | Versión final |
+  |---|---|---|
+  | Loggro | Exportación manual | API o integración directa |
+  | Bancolombia | Extracto manual, por rango | Open Finance o integración si existe |
+  | Google Sheets (gastos) | Exportación manual | Lectura directa del Sheet |
+
 - **Arqueo de caja (efectivo)** como cuarta fuente de auditoría, ya contemplada en el esquema de datos (`kind = venta_efectivo`, `consignacion`) — entra en F3+ cuando el motor ya esté validado (ADR-0007).
 - **OCR de comprobantes de pago y facturas**, para reducir la dependencia de registros manuales en Sheets — sin ADR propio todavía; requiere blueprint y decisión de arquitectura antes de construirse, siguiendo la misma disciplina de núcleo determinista con IA en los bordes (ADR-0001).
 - **Dashboards / panel web interactivo multiusuario**, evolución natural del reporte HTML + CLI cuando exista demanda real de varios restaurantes o varios usuarios por restaurante (ruta de escala definida en ADR-0003).
@@ -152,3 +162,7 @@ Detalle completo por fase en `plan-de-ejecucion.md`. Resumen de las puertas de f
 ## 15. Historial
 
 - **v1.0 (2026-07-11):** primera versión. Consolida la tesis de producto, historias de usuario y criterios de aceptación que antes vivían dispersos en `blueprint-arquitectura.md`, `backlog.md` y `plan-de-ejecucion.md`, en el marco de la adopción formal de Spec-Driven Development para este producto (ver `propuesta-reorganizacion-sdd.md` y ADR-0008).
+- **v1.1 (2026-07-12):** hallazgo operacional real validado por Laura — Bancolombia nunca entrega un extracto de un solo día, siempre un rango. Se agrega la regla permanente de fecha objetivo obligatoria en la ingesta (sección 6, sección 9, ADR-0009). Cambio incompatible hacia atrás en el CLI: `ingest` ahora exige `--dia`.
+- **v1.2 (2026-07-12):** calibración del adaptador de ventas POS contra el archivo real de Pikeo (`reporte_facturas`). Se fija "Valor del pago" como monto de conciliación y "Fecha de pago" como fecha de referencia; las diferencias con "Total" se preservan como observación, nunca se pierden (sección 9, ADR-0010).
+- **v1.3 (2026-07-12):** se reclasifica Google Sheets como fuente de datos permanente, no archivo de exportación diaria — sin cambios de código en esta versión, solo el compromiso de que sustituir la exportación manual por lectura directa sea un cambio pequeño cuando llegue el momento (sección 14, ADR-0011).
+- **v1.4 (2026-07-12):** cierre oficial de F0. Primera ejecución real completa sobre datos de Pikeo; auditoría del matching encontró que el 41.7% inicial era un problema de clasificación bancaria, no del motor — corregido con una tabla completa de patrones de ingreso Bancolombia (transferencia, PAGO QR, TRANSF abreviado, reverso, rendimiento financiero), alcanzando 84.5% de auto-conciliación sobre el mismo día, sin cambios al algoritmo de matching. Detalle completo en `MILESTONE-F0.md`. Las 4 excepciones restantes quedan formalmente reclasificadas como hipótesis de negocio, no como bugs — entran a F1, cuyo objetivo cambia de "corregir clasificación" a "reducir decisiones humanas con reglas de negocio y contexto operativo" (motor de expectativas ADR-0006, libro de reglas ADR-0005).

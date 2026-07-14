@@ -4,10 +4,10 @@ type: blueprint
 status: active
 owner: "Laura Jaramillo"
 created: 2026-07-08
-updated: 2026-07-11
-version: 1.2
+updated: 2026-07-12
+version: 1.4
 tags: [jaralab-auditor, cash-control-ai, arquitectura, finanzas, conciliacion, producto]
-related: ["spec.md", "../../07_DECISIONS/0001-nucleo-determinista-ia-en-los-bordes.md", "../../07_DECISIONS/0002-adaptadores-por-fuente.md", "../../07_DECISIONS/0003-stack-monolito-python-sqlite.md", "../../07_DECISIONS/0004-alcance-mvp-un-solo-canal.md", "../../07_DECISIONS/0005-aprendizaje-como-libro-de-reglas.md", "../../07_DECISIONS/0006-motor-de-expectativas.md", "../../07_DECISIONS/0007-alcance-v1-dinero-electronico.md", "../../07_DECISIONS/0008-nombre-de-mercado-cash-control-ai.md"]
+related: ["spec.md", "../../07_DECISIONS/0001-nucleo-determinista-ia-en-los-bordes.md", "../../07_DECISIONS/0002-adaptadores-por-fuente.md", "../../07_DECISIONS/0003-stack-monolito-python-sqlite.md", "../../07_DECISIONS/0004-alcance-mvp-un-solo-canal.md", "../../07_DECISIONS/0005-aprendizaje-como-libro-de-reglas.md", "../../07_DECISIONS/0006-motor-de-expectativas.md", "../../07_DECISIONS/0007-alcance-v1-dinero-electronico.md", "../../07_DECISIONS/0008-nombre-de-mercado-cash-control-ai.md", "../../07_DECISIONS/0009-ingesta-con-fecha-objetivo-obligatoria.md", "../../07_DECISIONS/0010-calibracion-real-ventas-pos-fuente-de-verdad-del-monto.md", "../../07_DECISIONS/0011-fuentes-vivas-vs-archivos-exportados.md"]
 ---
 
 # JaraLab Cash Control AI — Blueprint de Arquitectura
@@ -93,7 +93,9 @@ GMF/4x1000 identificado por fórmula exacta, no por heurística. Comisiones de d
 
 **El registro de gastos es fuente de baja confianza por diseño.** Lo llena un humano, tarde y con errores. El motor le aplica un período de gracia configurable (48–72h): un débito bancario sin soporte no alarma de inmediato, se devuelve al gerente como tarea ("registra estos 3 gastos") y solo escala a alerta si vence la gracia. Rigor de extracto bancario para el banco; tolerancia realista para lo humano.
 
-**Ingesta operativa v1:** hoy alguien exporta los archivos a mano cada día. La v1 reduce esa fricción al mínimo viable sin construir integraciones: una carpeta vigilada (Google Drive o carpeta local) donde el gerente suelta los archivos y el Auditor hace el resto — detecta la fuente por el contenido (no por el nombre del archivo), procesa de forma idempotente (re-subir un extracto o subir el mensual encima del diario no duplica eventos, gracias al dedupe_hash) y confirma qué recibió y qué falta. Eliminar la exportación manual por completo (correo del banco, API de Loggro) es la mejora de mayor impacto en adopción y se investiga en paralelo a F1.
+**El Sheets de gastos es una fuente viva, no un archivo diario, aunque v1 lo consuma como archivo.** Cada adaptador ya traduce su fuente a `RawRow` — un contrato que nunca supo ni le importó si el origen era un archivo local o una respuesta de API. Por diseño, no por casualidad: sustituir la exportación manual del Sheet por lectura directa (API o sincronización) es agregar una función que produce `RawRow` desde la API, no rediseñar el pipeline (ADR-0011). El mismo patrón aplica a Loggro y Bancolombia si algún día ofrecen integración directa.
+
+**Ingesta operativa v1:** hoy alguien exporta los archivos a mano cada día. La v1 reduce esa fricción al mínimo viable sin construir integraciones: una carpeta vigilada (Google Drive o carpeta local) donde el gerente suelta los archivos y el Auditor hace el resto — detecta la fuente por el contenido (no por el nombre del archivo), procesa de forma idempotente (re-subir un extracto o subir el mensual encima del diario no duplica eventos, gracias al dedupe_hash) y confirma qué recibió y qué falta. La ingesta siempre corre contra una fecha objetivo declarada por el usuario, nunca contra "todo lo que traiga el archivo": Bancolombia solo entrega extractos por rango, nunca de un solo día, así que un mismo archivo puede traer movimientos de varios días — solo los del día pedido entran a la base, el resto se ignora sin error (ADR-0009). Eliminar la exportación manual por completo (correo del banco, API de Loggro) es la mejora de mayor impacto en adopción y se investiga en paralelo a F1.
 
 ## 7. Stack técnico
 

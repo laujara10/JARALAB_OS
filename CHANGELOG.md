@@ -4,8 +4,8 @@ type: log
 status: active
 owner: "Laura Jaramillo"
 created: 2026-07-10
-updated: 2026-07-10
-version: 1.0
+updated: 2026-07-12
+version: 1.2
 tags: [changelog, reorganizacion]
 related: ["README.md"]
 ---
@@ -69,3 +69,43 @@ Se corrió una verificación automática de los 78 enlaces `.md` encontrados en 
 ## 9. Nada se eliminó
 
 Ningún archivo de contenido existente (proyectos, ADRs, bitácoras, constitución técnica) fue borrado o alterado en su contenido sustantivo — solo se movieron de carpeta o se corrigieron rutas de referencia.
+
+---
+
+# Changelog — 2026-07-12: Primer cierre real exitoso (F0)
+
+## Qué pasó
+
+Primera ejecución real y completa del Ritual Diario de JaraLab Cash Control AI (`jaralab-auditor`) sobre datos reales de Pikeo, sin errores, de punta a punta con un solo comando:
+
+```
+python3 -m auditor --config config/pikeo.yaml run --dia 2026-07-03
+```
+
+Ingesta de extracto Bancolombia (cuenta Pikeo + cuenta Carolina) y del reporte de facturas Loggro real del 2026-07-03. Resultado: $4.300.305 vendido, $1.289.464 conciliado automáticamente (41.7% de la venta electrónica), cobertura del 72% de la venta bajo auditoría, 8 excepciones mostradas con evidencia real (número de factura) y comandos de resolución.
+
+## Por qué importa
+
+Cierra F0 (fundación de datos) tal como lo define `spec.md` §11: un día real de Pikeo se ingiere con un comando, sin duplicar, con falla ruidosa ante formato inesperado. Detalle completo del hito en `04_PRODUCTS/jaralab-auditor/MILESTONE-F0.md`.
+
+## Referencia
+
+Ver `09_DAILY_LOG/2026-07-12-primer-cierre-real-exitoso-f0.md` para la bitácora completa del día, y `04_PRODUCTS/jaralab-auditor/MILESTONE-F0.md` para el hito documentado con propuesta de objetivo de F1.
+
+---
+
+# Changelog — 2026-07-12: Cierre oficial de F0
+
+## Qué pasó
+
+Se auditó a fondo el resultado de la primera corrida real (41.7% de auto-conciliación) en vez de aceptarlo como dado. Se encontró que la causa no era el motor de matching sino la clasificación de ingresos bancarios: pagos por "PAGO QR" y transferencias abreviadas ("TRANSF") ya estaban en el banco pero el sistema no los reconocía. Se construyó una tabla de clasificación completa a partir de un inventario de los 38 movimientos bancarios reales del día (no de casos aislados), agregando además dos categorías nuevas (`reverso`, `rendimiento_financiero`) explícitamente excluidas del motor de matching.
+
+**Resultado:** 41.7% → **84.5%** de auto-conciliación sobre el mismo día real, sin tocar el algoritmo. 45/45 pruebas pasan. Las 4 excepciones restantes se investigaron una por una y ninguna corresponde a un patrón bancario sin reconocer — quedan reclasificadas oficialmente como hipótesis de negocio para F1, no como bugs.
+
+## Por qué importa
+
+F0 (fundación de datos) queda formalmente cerrado. Detalle completo, checklist y objetivo revisado de F1 en `04_PRODUCTS/jaralab-auditor/MILESTONE-F0.md` (v2.0).
+
+## Referencia
+
+`09_DAILY_LOG/2026-07-12-tabla-clasificacion-bancolombia.md`, `04_PRODUCTS/jaralab-auditor/spec.md` (v1.4), `04_PRODUCTS/jaralab-auditor/MILESTONE-F0.md` (v2.0).
