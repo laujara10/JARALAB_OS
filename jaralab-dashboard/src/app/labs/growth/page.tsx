@@ -126,7 +126,7 @@ function ExperimentCard({ e }: { e: Experiment }) {
             <Badge tone="neutral">{e.channel}</Badge>
           </div>
           <div style={{ fontWeight: 500, fontSize: '0.9375rem', color: 'var(--fg-primary)', lineHeight: 1.45, fontStyle: 'italic', fontFamily: 'var(--font-serif)' }}>
-            "{e.hypothesis}"
+            &ldquo;{e.hypothesis}&rdquo;
           </div>
         </div>
         {e.lift !== undefined && <LiftIndicator lift={e.lift} />}

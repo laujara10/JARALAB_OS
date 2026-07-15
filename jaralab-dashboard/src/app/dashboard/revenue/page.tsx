@@ -372,42 +372,42 @@ function TendenciaSection({ puntos, periodo }: { puntos: VentasData['tendencia']
   )
 }
 
+function BarList({ items, color }: { items: { label: string; valor: number; pct: number }[]; color: string }) {
+  const max = Math.max(...items.map(i => i.valor))
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {items.map(it => (
+        <div key={it.label}>
+          <div style={{
+            display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+            marginBottom: 5,
+          }}>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.8125rem', color: 'var(--ink-55)' }}>
+              {it.label}
+            </span>
+            <span style={{
+              fontFamily: 'var(--font-mono)', fontSize: '0.8125rem',
+              color: 'var(--ink)', fontVariantNumeric: 'tabular-nums',
+            }}>
+              {formatCOP(it.valor)} <span style={{ color: 'var(--ink-30)', fontSize: '0.75rem' }}>({it.pct}%)</span>
+            </span>
+          </div>
+          <div style={{ height: 4, background: 'var(--hairline)' }}>
+            <div style={{
+              height: '100%',
+              width: `${(it.valor / max) * 100}%`,
+              background: color,
+              transition: 'width 0.4s var(--ease-out)',
+            }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function DesgloseCanal({ canal, metodo }: { canal: VentasData['por_canal']; metodo: VentasData['por_metodo'] }) {
   if (!canal.length && !metodo.length) return null
-
-  function BarList({ items, color }: { items: { label: string; valor: number; pct: number }[]; color: string }) {
-    const max = Math.max(...items.map(i => i.valor))
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {items.map(it => (
-          <div key={it.label}>
-            <div style={{
-              display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-              marginBottom: 5,
-            }}>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.8125rem', color: 'var(--ink-55)' }}>
-                {it.label}
-              </span>
-              <span style={{
-                fontFamily: 'var(--font-mono)', fontSize: '0.8125rem',
-                color: 'var(--ink)', fontVariantNumeric: 'tabular-nums',
-              }}>
-                {formatCOP(it.valor)} <span style={{ color: 'var(--ink-30)', fontSize: '0.75rem' }}>({it.pct}%)</span>
-              </span>
-            </div>
-            <div style={{ height: 4, background: 'var(--hairline)' }}>
-              <div style={{
-                height: '100%',
-                width: `${(it.valor / max) * 100}%`,
-                background: color,
-                transition: 'width 0.4s var(--ease-out)',
-              }} />
-            </div>
-          </div>
-        ))}
-      </div>
-    )
-  }
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>

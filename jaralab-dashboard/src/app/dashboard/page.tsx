@@ -487,7 +487,7 @@ function EstadoError({ kpis }: { kpis: ResumenData['kpis'] }) {
           Algunos datos no pudieron sincronizarse
         </div>
         <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.8125rem', color: 'var(--fg-secondary)', lineHeight: 1.55 }}>
-          Las métricas disponibles se muestran abajo. Los campos marcados como "Sin datos" necesitan que se vuelva a cargar la fuente (Loggro o el archivo maestro de gastos).
+          Las métricas disponibles se muestran abajo. Los campos marcados como &quot;Sin datos&quot; necesitan que se vuelva a cargar la fuente (Loggro o el archivo maestro de gastos).
         </div>
         {faltantes.length > 0 && (
           <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>

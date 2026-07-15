@@ -153,6 +153,7 @@ export default function CopilotPage() {
   // Cargar AuditResult del localStorage al montar
   React.useEffect(() => {
     const result = loadAuditResult()
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAuditResult(result)
 
     const ctx: CopilotContext | null = result ? { auditResult: result } : null

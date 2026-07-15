@@ -568,7 +568,7 @@ function HoyPageInner() {
         {/* ── HEADER ── */}
         <div style={{ marginBottom: 28 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-            <GreetIcon size={16} color="var(--fg-tertiary)" />
+            {React.createElement(GreetIcon, { size: 16, color: 'var(--fg-tertiary)' })}
             <span style={{
               fontFamily: 'var(--font-sans)', fontSize: '0.75rem',
               color: 'var(--fg-tertiary)', textTransform: 'capitalize',
