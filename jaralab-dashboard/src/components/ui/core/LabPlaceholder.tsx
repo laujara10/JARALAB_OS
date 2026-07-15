@@ -8,6 +8,7 @@ interface LabPlaceholderProps {
   capabilities: string[]
 }
 
+// v3: badge outline+dot terracota, capability cards hairline sin sombra
 export function LabPlaceholder({ name, description, icon, capabilities }: LabPlaceholderProps) {
   return (
     <>
@@ -16,25 +17,26 @@ export function LabPlaceholder({ name, description, icon, capabilities }: LabPla
         flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
         padding: 'var(--space-16)', gap: 'var(--space-6)', textAlign: 'center',
       }}>
-        <div style={{ color: 'var(--fg-tertiary)' }}>{icon}</div>
+        <div style={{ color: 'var(--ink-30)' }}>{icon}</div>
         <div>
-          <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', fontStyle: 'italic', color: 'var(--fg-primary)', marginBottom: 'var(--space-3)' }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontStyle: 'italic', color: 'var(--ink)', marginBottom: 'var(--space-3)' }}>
             {name}
           </div>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'var(--fg-secondary)', maxWidth: 480, lineHeight: 1.6 }}>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: 'var(--ink-55)', maxWidth: 480, lineHeight: 1.6 }}>
             {description}
           </div>
         </div>
 
+        {/* Badge v3: outline + punto terracota */}
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: 8,
-          padding: '6px 14px', borderRadius: 'var(--radius-full)',
-          background: 'var(--gold-100)', border: '1px solid var(--gold-200)',
+          padding: '5px 12px',
+          background: 'transparent', border: '1px solid var(--hairline)',
           fontFamily: 'var(--font-sans)', fontSize: '0.8125rem', fontWeight: 500,
-          color: 'var(--fg-gold)',
+          color: 'var(--ink-55)',
         }}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--fg-gold)', display: 'inline-block' }} />
-          En desarrollo — validado primero en Pikeo & Callejero
+          <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--terracota)', display: 'inline-block', flexShrink: 0 }} />
+          En desarrollo — validado primero en Pikeo &amp; Callejero
         </div>
 
         <div style={{
@@ -43,10 +45,10 @@ export function LabPlaceholder({ name, description, icon, capabilities }: LabPla
         }}>
           {capabilities.map((cap, i) => (
             <div key={i} style={{
-              background: 'var(--bg-surface)', border: '1px solid var(--border-subtle)',
-              borderRadius: 'var(--radius-md)', padding: 'var(--space-4)',
-              fontFamily: 'var(--font-sans)', fontSize: '0.8125rem', color: 'var(--fg-secondary)',
-              lineHeight: 1.5, boxShadow: 'var(--shadow-xs)',
+              background: 'var(--panel)', border: '1px solid var(--hairline)',
+              padding: 'var(--space-4)',
+              fontFamily: 'var(--font-sans)', fontSize: '0.8125rem', color: 'var(--ink-55)',
+              lineHeight: 1.5,
             }}>
               {cap}
             </div>

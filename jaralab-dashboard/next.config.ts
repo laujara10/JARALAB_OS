@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'export',
-  basePath: '/JARALAB_OS',
+  // Sin output: 'export' — Vercel corre Next.js como servidor, no necesita export estático.
+  // Sin basePath — las rutas son desde la raíz en Vercel.
   images: { unoptimized: true },
 };
 

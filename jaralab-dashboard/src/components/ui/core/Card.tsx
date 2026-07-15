@@ -7,13 +7,12 @@ interface CardProps {
   elevated?: boolean
 }
 
-export function Card({ children, style, padding = 'var(--space-6)', elevated }: CardProps) {
+// v3: fondo --panel, borde --hairline, sin sombra, sin radius
+export function Card({ children, style, padding = 'var(--space-6)' }: CardProps) {
   return (
     <div style={{
-      background: 'var(--bg-surface)',
-      border: '1px solid var(--border-subtle)',
-      borderRadius: 'var(--radius-md)',
-      boxShadow: elevated ? 'var(--shadow-sm)' : 'var(--shadow-xs)',
+      background: 'var(--panel)',
+      border: '1px solid var(--hairline)',
       padding,
       ...style,
     }}>

@@ -13,18 +13,19 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const sizes: Record<Size, React.CSSProperties> = {
   sm: { padding: '0 var(--space-3)', height: 30, fontSize: '0.8125rem', gap: 6 },
-  md: { padding: '0 var(--space-4)', height: 36, fontSize: '0.875rem', gap: 8 },
+  md: { padding: '0 var(--space-4)', height: 36, fontSize: '0.875rem',  gap: 8 },
   lg: { padding: '0 var(--space-5)', height: 44, fontSize: '0.9375rem', gap: 8 },
 }
 
+// v3: primary = --ink fill (ink-on-white), secondary = outline, ghost = transparent
 function variantBase(v: Variant, disabled: boolean): React.CSSProperties {
-  if (disabled) return { background: 'var(--neutral-100)', color: 'var(--neutral-400)', border: '1px solid var(--neutral-100)' }
+  if (disabled) return { background: 'var(--hairline)', color: 'var(--ink-30)', border: '1px solid transparent' }
   switch (v) {
-    case 'secondary': return { background: 'var(--bg-surface)', color: 'var(--fg-primary)', border: '1px solid var(--border-default)' }
-    case 'ghost':     return { background: 'transparent', color: 'var(--fg-primary)', border: '1px solid transparent' }
-    case 'danger':    return { background: 'var(--danger-500)', color: 'var(--fg-inverse)', border: '1px solid var(--danger-500)' }
-    case 'gold':      return { background: 'var(--accent-gold)', color: 'var(--neutral-900)', border: '1px solid var(--accent-gold)' }
-    default:          return { background: 'var(--accent-primary)', color: 'var(--fg-inverse)', border: '1px solid var(--accent-primary)' }
+    case 'secondary': return { background: 'transparent', color: 'var(--ink)', border: '1px solid var(--hairline)' }
+    case 'ghost':     return { background: 'transparent', color: 'var(--ink-55)', border: '1px solid transparent' }
+    case 'danger':    return { background: 'var(--urgente)', color: '#fff', border: '1px solid var(--urgente)' }
+    case 'gold':      return { background: 'transparent', color: 'var(--ink)', border: '1px solid var(--hairline)' }
+    default:          return { background: 'var(--ink)', color: '#fff', border: '1px solid var(--ink)' }
   }
 }
 
@@ -32,14 +33,13 @@ export function Button({ children, variant = 'primary', size = 'md', icon, iconR
   const [hover, setHover] = React.useState(false)
   const [active, setActive] = React.useState(false)
   const base = variantBase(variant, !!disabled)
-  let bg = base.background as string
+  let overrides: React.CSSProperties = {}
   if (!disabled && hover) {
-    if (variant === 'primary') bg = 'var(--accent-primary-hover)'
-    else if (variant === 'secondary' || variant === 'ghost') bg = 'var(--neutral-50)'
-    else if (variant === 'danger') bg = 'oklch(0.48 0.20 25)'
-    else if (variant === 'gold') bg = 'var(--gold-600)'
+    if (variant === 'primary')    overrides = { background: 'rgba(26,19,16,0.82)' }
+    if (variant === 'secondary')  overrides = { background: 'var(--bg)' }
+    if (variant === 'ghost')      overrides = { background: 'var(--hairline)' }
   }
-  if (!disabled && active && variant === 'primary') bg = 'var(--accent-primary-active)'
+  if (!disabled && active && variant === 'primary') overrides = { background: 'rgba(26,19,16,0.95)' }
 
   return (
     <button
@@ -52,10 +52,10 @@ export function Button({ children, variant = 'primary', size = 'md', icon, iconR
       style={{
         display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
         fontFamily: 'var(--font-sans)', fontWeight: 500,
-        borderRadius: 'var(--radius-sm)', cursor: disabled ? 'not-allowed' : 'pointer',
+        borderRadius: 0, cursor: disabled ? 'not-allowed' : 'pointer',
         transition: 'background var(--duration-fast) var(--ease-standard)',
         transform: active && !disabled ? 'translateY(1px)' : 'none',
-        ...sizes[size], ...base, background: bg,
+        ...sizes[size], ...base, ...overrides,
         ...style,
       }}
       {...rest}

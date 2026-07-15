@@ -1,80 +1,95 @@
-/* JaraLab — Color tokens
-   Warm-neutral editorial base (paper/ink) with a deep forest-green primary
-   (clarity, growth, trust) and a muted gold secondary (premium, precision).
-   All ramps built in oklch for perceptual evenness. */
+/* JaraLab OS — Design System v3 "Quiet Luxury Editorial"
+   Sistema visual propio de JaraLab OS — independiente del branding general.
+   Referencia: papelería de estudio de diseño premium / editorial blanco y negro.
+
+   REGLA DE ORO:
+   --terracota  → máx 1-2 usos por pantalla (CTAs, acento único)
+   --urgente    → SOLO severidad urgente en badges/texto, NUNCA como fondo relleno
+   Cualquier card/panel → fondo --panel o transparente, delimitado por --hairline */
+
 :root {
-  /* ---- Neutral ramp (warm, near-desaturated) ---- */
-  --neutral-0:   oklch(0.995 0.002 80);
-  --neutral-25:  oklch(0.98  0.004 75);
-  --neutral-50:  oklch(0.965 0.005 75);
-  --neutral-100: oklch(0.93  0.006 70);
-  --neutral-200: oklch(0.87  0.007 65);
-  --neutral-300: oklch(0.78  0.008 60);
-  --neutral-400: oklch(0.65 0.009 55);
-  --neutral-500: oklch(0.53 0.010 55);
-  --neutral-600: oklch(0.43 0.011 50);
-  --neutral-700: oklch(0.34 0.012 50);
-  --neutral-800: oklch(0.25 0.011 45);
-  --neutral-900: oklch(0.18 0.009 45);
-  --neutral-950: oklch(0.13 0.007 45);
+  /* ── Base ─────────────────────────────────────────────────────────────────── */
+  --bg:       #fdfbf8;    /* fondo de página — blanco cálido, casi puro */
+  --panel:    #ffffff;    /* cards/bloques — blanco puro para diferenciarse del bg */
+  --ink:      #1a1310;    /* negro cálido — texto principal, bordes, estructura */
+  --ink-55:   rgba(26,19,16,0.60);  /* texto secundario / metadata */
+  --ink-30:   rgba(26,19,16,0.32);  /* líneas divisorias sutiles, placeholders */
+  --hairline: rgba(26,19,16,0.13);  /* bordes de bloques y separadores */
 
-  /* ---- Primary: JaraLab brand orange-red ---- */
-  --primary-50:  oklch(0.97 0.03  32);
-  --primary-100: oklch(0.93 0.07  32);
-  --primary-200: oklch(0.86 0.12  32);
-  --primary-300: oklch(0.76 0.17  32);
-  --primary-400: oklch(0.67 0.20  32);
-  --primary-500: oklch(0.60 0.22  32);
-  --primary-600: oklch(0.54 0.21  32);
-  --primary-700: oklch(0.46 0.18  32);
-  --primary-800: oklch(0.36 0.14  32);
-  --primary-900: oklch(0.26 0.10  32);
+  /* ── Acentos ──────────────────────────────────────────────────────────────── */
+  --terracota: #C05A3E;   /* ÚNICO acento vivo — máx 1-2 por pantalla */
+  --teal:      #127475;   /* acento institucional — uso excepcional */
+  --urgente:   #B23A2E;   /* SOLO badges/texto de severidad urgente */
 
-  /* ---- Secondary: muted gold ---- */
-  --gold-50:  oklch(0.96 0.03 80);
-  --gold-100: oklch(0.90 0.06 78);
-  --gold-200: oklch(0.83 0.09 76);
-  --gold-300: oklch(0.76 0.11 72);
-  --gold-400: oklch(0.70 0.125 68);
-  --gold-500: oklch(0.62 0.125 64);
-  --gold-600: oklch(0.52 0.11 60);
-  --gold-700: oklch(0.42 0.09 56);
+  /* ── Semantic surface utilities ───────────────────────────────────────────── */
+  --success-fg:  #2B532E;              /* verde marca — éxito/positivo */
+  --success-bg:  rgba(43,83,46,0.07);
+  --warning-fg:  #8B5B00;              /* mostaza oscuro legible */
+  --warning-bg:  rgba(219,140,35,0.10);
+  --danger-fg:   var(--urgente);
+  --danger-bg:   rgba(178,58,46,0.08);
+  --info-fg:     var(--teal);
+  --info-bg:     rgba(18,116,117,0.08);
 
-  /* ---- Semantic ---- */
-  --success-500: oklch(0.60 0.13 152);
-  --success-100: oklch(0.93 0.05 152);
-  --warning-500: oklch(0.75 0.15 80);
-  --warning-100: oklch(0.95 0.05 85);
-  --danger-500:  oklch(0.55 0.20 25);
-  --danger-100:  oklch(0.93 0.05 25);
-  --info-500:    oklch(0.55 0.11 240);
-  --info-100:    oklch(0.93 0.03 240);
+  /* ── Aliases de backward-compat (usados en componentes y páginas existentes) */
+  --bg-page:      var(--bg);
+  --bg-canvas:    var(--panel);
+  --bg-surface:   var(--panel);
+  --bg-surface-2: rgba(26,19,16,0.04);
+  --bg-inverse:   var(--ink);
+  --bg-accent:    var(--terracota);
+  --bg-accent-soft: rgba(192,90,62,0.08);
 
-  /* ---- Semantic aliases ---- */
-  --bg-page:       var(--neutral-25);
-  --bg-canvas:     var(--neutral-0);
-  --bg-surface:    var(--neutral-0);
-  --bg-surface-2:  var(--neutral-50);
-  --bg-inverse:    var(--neutral-900);
-  --bg-accent:     var(--primary-600);
-  --bg-accent-soft:var(--primary-50);
+  --fg-primary:   var(--ink);
+  --fg-secondary: var(--ink-55);
+  --fg-tertiary:  var(--ink-30);
+  --fg-inverse:   var(--bg);
+  --fg-accent:    var(--terracota);
+  --fg-gold:      #8B5B00;
 
-  --fg-primary:    var(--neutral-900);
-  --fg-secondary:  var(--neutral-600);
-  --fg-tertiary:   var(--neutral-400);
-  --fg-inverse:    var(--neutral-0);
-  --fg-accent:     var(--primary-600);
-  --fg-gold:       var(--gold-600);
+  --border-subtle:  var(--hairline);
+  --border-default: rgba(26,19,16,0.20);
+  --border-strong:  rgba(26,19,16,0.40);
+  --border-accent:  var(--terracota);
 
-  --border-subtle: var(--neutral-100);
-  --border-default:var(--neutral-200);
-  --border-strong: var(--neutral-400);
-  --border-accent: var(--primary-400);
+  --accent-primary:        var(--terracota);
+  --accent-primary-hover:  #a84933;
+  --accent-primary-active: #963f2c;
+  --accent-gold:           #8B5B00;
 
-  --accent-primary: var(--primary-600);
-  --accent-primary-hover: var(--primary-700);
-  --accent-primary-active: var(--primary-800);
-  --accent-gold: var(--gold-500);
+  --focus-ring: var(--terracota);
 
-  --focus-ring: var(--primary-400);
+  /* ── Neutral ramp (para sidebar dev-bar y utilities) ─────────────────────── */
+  --neutral-0:   #ffffff;
+  --neutral-25:  rgba(26,19,16,0.02);
+  --neutral-50:  rgba(26,19,16,0.04);
+  --neutral-100: var(--hairline);
+  --neutral-200: rgba(26,19,16,0.20);
+  --neutral-300: rgba(26,19,16,0.32);
+  --neutral-400: rgba(26,19,16,0.45);
+  --neutral-500: var(--ink-55);
+  --neutral-600: rgba(26,19,16,0.68);
+  --neutral-700: rgba(26,19,16,0.78);
+  --neutral-800: rgba(26,19,16,0.87);
+  --neutral-900: rgba(26,19,16,0.93);
+  --neutral-950: var(--ink);
+
+  /* ── Semantic aliases (para componentes Badge, StatCard, etc.) ───────────── */
+  --success-500: var(--success-fg);
+  --success-100: var(--success-bg);
+  --warning-500: var(--warning-fg);
+  --warning-100: var(--warning-bg);
+  --danger-500:  var(--urgente);
+  --danger-100:  var(--danger-bg);
+  --info-500:    var(--info-fg);
+  --info-100:    var(--info-bg);
+
+  /* Primary ramp (legado — usar --terracota directamente en código nuevo) */
+  --primary-50:  rgba(192,90,62,0.06);
+  --primary-100: rgba(192,90,62,0.12);
+  --primary-200: rgba(192,90,62,0.22);
+  --primary-600: var(--terracota);
+  --primary-700: #a84933;
+  --primary-800: #963f2c;
+  --primary-900: #7a3323;
 }
